@@ -15,10 +15,13 @@ const resolvers = {
     }
 }
 
-
 const app = express();
 
-app.get("/", (req, res) => res.send("welcome to microanswers"));
+app.use(express.static(path.join(__dirname, 'client', 'build')));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+  });
 
 const server = new ApolloServer({ typeDefs, resolvers });
 server.applyMiddleware({ app });
