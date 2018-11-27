@@ -20,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/shamsazam/microanswers/issues"
   },
-  "homepage": "https://github.com/shamsazam/microanswers#readme"
+  "homepage": "https://github.com/shamsazam/microanswers#readme",
+  "dependencies": {
+    "apollo-server-express": "^2.2.3",
+    "express": "^4.16.4",
+    "graphql": "^14.0.2"
+  }
 }
