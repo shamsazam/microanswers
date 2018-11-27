@@ -1,5 +1,6 @@
 const { ApolloServer, gql } = require('apollo-server-express');
-const app = require('express')();
+const path = require('path');
+const express = require('express');
 const PORT = process.env.PORT || 8888;
 
 const typeDefs = gql`
@@ -14,10 +15,12 @@ const resolvers = {
     }
 }
 
-const server = new ApolloServer({ typeDefs, resolvers });
+
+const app = express();
 
 app.get("/", (req, res) => res.send("welcome to microanswers"));
 
+const server = new ApolloServer({ typeDefs, resolvers });
 server.applyMiddleware({ app });
 
 app.listen(PORT, () => console.log(`listening on ${PORT}`) );
