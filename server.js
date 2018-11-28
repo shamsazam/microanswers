@@ -17,13 +17,18 @@ const resolvers = {
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'client', 'build')));
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-  });
+app.get('/todo', (req, res) => {
+    res.json({ title: "From Server" });
+});
 
 const server = new ApolloServer({ typeDefs, resolvers });
 server.applyMiddleware({ app });
+
+app.use(express.static(path.join(__dirname, 'client', 'build')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+});
+
 
 app.listen(PORT, () => console.log(`listening on ${PORT}`) );
