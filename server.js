@@ -3,15 +3,24 @@ const path = require('path');
 const express = require('express');
 const PORT = process.env.PORT || 8888;
 
+require('./utils/db');
+
+const questions = [{text: "Largest country"}, { text: "Smallest bird"}];
+
 const typeDefs = gql`
     type Query {
-        hello: String
+        hello: String,
+        questions: [Question]
+    }
+    type Question {
+        text: String
     }
 `;
 
 const resolvers = {
     Query: {
-        hello: () => 'Hello there'
+        hello: () => 'Hello there',
+        questions: () => questions
     }
 }
 
