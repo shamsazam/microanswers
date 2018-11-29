@@ -7,14 +7,11 @@ import './bulma.min.css';
 import './App.css';
 
 const client = new ApolloClient({
-  uri: "/graphql",
-  headers: {
-    authorization: "sdflflfljlsdsdljlsdjldfjd"
-  }
+  uri: "/graphql"
 });
 
 const App = () => (
-  <ApolloProvider client={client}>
+  <ApolloProvider client={client}> 
     <div className="wrapper">
       <Navbar />
       <h2>Welcome</h2>
