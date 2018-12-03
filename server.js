@@ -1,28 +1,12 @@
-const { ApolloServer, gql } = require('apollo-server-express');
+const { ApolloServer } = require('apollo-server-express');
 const path = require('path');
 const express = require('express');
+const typeDefs = require('./graphql/typeDefs');
+const resolvers = require('./graphql/resolvers');
+const models = require('./models');
 const PORT = process.env.PORT || 8888;
 
 require('./utils/db');
-
-const questions = [{text: "Largest country"}, { text: "Smallest bird"}];
-
-const typeDefs = gql`
-    type Query {
-        hello: String,
-        questions: [Question]
-    }
-    type Question {
-        text: String
-    }
-`;
-
-const resolvers = {
-    Query: {
-        hello: () => 'Hello there',
-        questions: () => questions
-    }
-}
 
 const app = express();
 
@@ -30,7 +14,7 @@ app.get('/todo', (req, res) => {
     res.json({ title: "From Server" });
 });
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({ typeDefs, resolvers, context: { models } });
 server.applyMiddleware({ app });
 
 app.use(express.static(path.join(__dirname, 'client', 'build')));
