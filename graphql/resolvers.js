@@ -8,7 +8,8 @@ const resolvers = {
     },
 
     Mutation: {
-        register: async (_, user, ctx) => await authService.register(user)
+        register: async (_, user, ctx) => await authService.register(user),
+        login: async (_, {email, password }, ctx) => await authService.login(email, password)
     }
 }
 

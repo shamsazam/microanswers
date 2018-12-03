@@ -10,9 +10,15 @@ const register = async ({ firstname, lastname, email, password }) => {
     return newUser;
 }
 
-const login = async (email, passowrd) => {
-    const passwordHash = await bcrypt.hash(password, saltRounds);
-    const user = await User.findOne({ email, password: passwordHash });
+const login = async (email, password) => {
+    const user = await User.findOne({ email });
+    if(!user){
+        throw new Error('email not found');
+    }
+    const match = await bcrypt.compare(password, user.password);
+    if(!match){
+        throw new Error('password is not correct');
+    }
     return user;
 }
 
