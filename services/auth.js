@@ -4,9 +4,8 @@ const User = require('../models/user');
 const saltRounds = 10;
 
 const register = async ({ firstname, lastname, email, password }) => {
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-    const newUser = await User.create({ firstname, lastname, email, password: hashedPassword });
-    console.log('newUser',newUser);
+    password = await bcrypt.hash(password, saltRounds);
+    const newUser = await User.create({ firstname, lastname, email, password });
     return newUser;
 }
 
