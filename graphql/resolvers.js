@@ -5,10 +5,11 @@ const User = require('../models/user');
 const Answer = require('../models/answer');
 
 const resolvers = {
+    
     Query: {
         hello: () => 'Hello there',
         getUsers: (_, args, ctx) => loggedIn(args, ctx, args => User.find({}) ),
-        getQuestions: (_, args, ctx) => loggedIn(args, ctx, args => User.find({}) ),
+        getQuestions: (_, args, ctx) => loggedIn(args, ctx, args => Question.find({}) ),
     },
 
     Mutation: {
