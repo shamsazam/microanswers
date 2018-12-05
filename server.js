@@ -3,7 +3,7 @@ const path = require('path');
 const express = require('express');
 const typeDefs = require('./graphql/typeDefs');
 const resolvers = require('./graphql/resolvers');
-const auth = require('./services/auth');
+const authService = require('./services/auth');
 const PORT = process.env.PORT || 8888;
 
 require('./utils/db');
@@ -17,7 +17,7 @@ app.get('/todo', (req, res) => {
 const server = new ApolloServer({ 
     typeDefs,
     resolvers, 
-    context: {  }
+    context: ({ req }) => authService.getUserFromAuthHeader(req.headers.authorization)
 });
 server.applyMiddleware({ app });
 

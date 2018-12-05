@@ -30,9 +30,16 @@ const createToken = (id, email) => {
     return token;
 }
 
-const getUserFromToken = (token) => {
-    const user = jwt.verify(token, config.JWT_SECRET);
-    return user;
+const getUserFromAuthHeader = authHeader => {
+    if(authHeader){
+        const token = authHeader.replace('Bearer ', '');
+        try{
+            const user = jwt.verify(token, config.JWT_SECRET);
+            return { user };
+        }
+        catch(e){}
+    }
+    return {};
 }
 
-module.exports = { register, login };
+module.exports = { register, login, getUserFromAuthHeader };
