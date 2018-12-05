@@ -3,7 +3,7 @@ const path = require('path');
 const express = require('express');
 const typeDefs = require('./graphql/typeDefs');
 const resolvers = require('./graphql/resolvers');
-const models = require('./models');
+const auth = require('./services/auth');
 const PORT = process.env.PORT || 8888;
 
 require('./utils/db');
@@ -14,7 +14,11 @@ app.get('/todo', (req, res) => {
     res.json({ title: "From Server" });
 });
 
-const server = new ApolloServer({ typeDefs, resolvers, context: { models } });
+const server = new ApolloServer({ 
+    typeDefs,
+    resolvers, 
+    context: {  }
+});
 server.applyMiddleware({ app });
 
 app.use(express.static(path.join(__dirname, 'client', 'build')));

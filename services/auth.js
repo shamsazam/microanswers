@@ -1,12 +1,15 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const config = require('../utils/config');
 
 const saltRounds = 10;
 
 const register = async ({ firstname, lastname, email, password }) => {
     password = await bcrypt.hash(password, saltRounds);
     const newUser = await User.create({ firstname, lastname, email, password });
-    return newUser;
+    const token = createToken(user.id, user.email);
+    return { user: newUser, token };
 }
 
 const login = async (email, password) => {
@@ -18,6 +21,17 @@ const login = async (email, password) => {
     if(!match){
         throw new Error('password is not correct');
     }
+    const token = createToken(user.id, user.email);
+    return { user, token };
+}
+
+const createToken = (id, email) => {
+    const token = jwt.sign({ id, email }, config.JWT_SECRET);
+    return token;
+}
+
+const getUserFromToken = (token) => {
+    const user = jwt.verify(token, config.JWT_SECRET);
     return user;
 }
 
