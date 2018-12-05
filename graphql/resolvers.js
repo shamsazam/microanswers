@@ -5,11 +5,11 @@ const User = require('../models/user');
 const Answer = require('../models/answer');
 
 const resolvers = {
-    
+
     Query: {
         hello: () => 'Hello there',
-        getUsers: (_, args, ctx) => loggedIn(args, ctx, args => User.find({}) ),
-        getQuestions: (_, args, ctx) => loggedIn(args, ctx, args => Question.find({}) ),
+        getUsers: (_, args, ctx) => loggedIn(args, ctx, args => User.find()),
+        getQuestions: (_, args, ctx) => loggedIn(args, ctx, args => Question.find()),
     },
 
     Mutation: {
@@ -20,19 +20,18 @@ const resolvers = {
     },
 
     User: {
-        questions: (user, _, __) => Question.find({ author: user.id })
+        questions: user => Question.find({ author: user.id })
     },
 
     Question: {
-        author: (ques, _, __) => User.findById(ques.author),
-        answers: (ques, _, __) => Answer.find({ question: ques.id })
+        author: ques => User.findById(ques.author),
+        answers: ques => Answer.find({ question: ques.id })
     },
     
     Answer: {
-        question: (ans, _, __) => Question.findById(ans.question),
-        author: (ans, _, __) => User.findById(ans.author)
+        question: ans => Question.findById(ans.question),
+        author: ans => User.findById(ans.author)
     }
 }
-
 
 module.exports = resolvers;
