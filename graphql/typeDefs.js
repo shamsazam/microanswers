@@ -1,17 +1,21 @@
 const { gql } = require('apollo-server-express')
 
 const typeDefs = gql`
+
+    directive @requireAuth on FIELD_DEFINITION
+
     type Query {
         hello: String!,
-        getUsers: [User!]!,
-        getQuestions: [Question!]!
+        getUsers: [User!] @requireAuth,
+        getQuestions: [Question!] @requireAuth,
+        getMyQuestions: [Question!] @requireAuth
     } 
 
     type Mutation {
         register(email: String!, firstname: String!, lastname: String!, password: String!): AuthPayload!,
         login(email: String!, password: String!): AuthPayload!,
-        addQuestion(title: String!, author: String!): Question!,
-        addAnswer(body: String!, question: String!, author: String!): Answer!
+        addQuestion(title: String!, author: String!): Question! @requireAuth,
+        addAnswer(body: String!, question: String!, author: String!): Answer! @requireAuth
     }
 
     type AuthPayload {
@@ -31,7 +35,7 @@ const typeDefs = gql`
         id: ID,
         title: String!,
         author: User,
-        answers: [Answer]
+        answers: [Answer!]
     }
 
     type Answer {
@@ -40,7 +44,6 @@ const typeDefs = gql`
         question: Question!,
         author: User!
     }
-
 
 `
 

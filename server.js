@@ -4,6 +4,7 @@ const express = require('express');
 const typeDefs = require('./graphql/typeDefs');
 const resolvers = require('./graphql/resolvers');
 const authService = require('./services/auth');
+const { RequireAuthDirective } = require('./graphql/directives');
 const PORT = process.env.PORT || 8888;
 
 require('./utils/db');
@@ -16,9 +17,11 @@ app.get('/todo', (req, res) => {
 
 const server = new ApolloServer({ 
     typeDefs,
-    resolvers, 
+    resolvers,
+    schemaDirectives: { requireAuth: RequireAuthDirective },
     context: ({ req }) => authService.getUserFromAuthHeader(req.headers.authorization)
 });
+
 server.applyMiddleware({ app });
 
 app.use(express.static(path.join(__dirname, 'client', 'build')));

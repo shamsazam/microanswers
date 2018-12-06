@@ -1,5 +1,4 @@
 const authService = require('../services/auth');
-const { loggedIn } = require('./authMiddleware');
 const Question = require('../models/question');
 const User = require('../models/user');
 const Answer = require('../models/answer');
@@ -8,15 +7,16 @@ const resolvers = {
 
     Query: {
         hello: () => 'Hello there',
-        getUsers: (_, args, ctx) => loggedIn(args, ctx, args => User.find()),
-        getQuestions: (_, args, ctx) => loggedIn(args, ctx, args => Question.find()),
+        getUsers: () => User.find(),
+        getQuestions: () => Question.find(),
+        getMyQuestions: (_, __, { user }) => Question.find({ author: user.id })
     },
 
     Mutation: {
-        register: (_, user, ctx) => authService.register(user),
-        login: (_, { email, password }, ctx) => authService.login(email, password),
-        addQuestion: (_, args, ctx) => loggedIn(args, ctx, args => Question.create(args)),
-        addAnswer: (_, args, ctx) => loggedIn(args, ctx, args => Answer.create(args)),
+        register: (_, user) => authService.register(user),
+        login: (_, { email, password }) => authService.login(email, password),
+        addQuestion: (_, args) => Question.create(args),
+        addAnswer: (_, args) => Answer.create(args),
     },
 
     User: {
