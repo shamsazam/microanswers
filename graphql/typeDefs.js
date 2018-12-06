@@ -15,7 +15,8 @@ const typeDefs = gql`
         register(email: String!, firstname: String!, lastname: String!, password: String!): AuthPayload!,
         login(email: String!, password: String!): AuthPayload!,
         addQuestion(title: String!, author: String!): Question! @requireAuth,
-        addAnswer(body: String!, question: String!, author: String!): Answer! @requireAuth
+        addAnswer(body: String!, question: String!, author: String!): Answer! @requireAuth,
+        likeQuestion(questionId: String!): Question @requireAuth
     }
 
     type AuthPayload {
@@ -35,7 +36,9 @@ const typeDefs = gql`
         id: ID,
         title: String!,
         author: User,
-        answers: [Answer!]
+        answers: [Answer!],
+        totalLikes: Int!,
+        alreadyLiked: Boolean
     }
 
     type Answer {
