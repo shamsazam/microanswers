@@ -8,7 +8,7 @@ const resolvers = {
     Query: {
         hello: () => 'Hello there',
         getUsers: () => User.find(),
-        getQuestions: () => Question.find(),
+        getTopQuestions: () => Question.find().sort({"likedBy": -1}).limit(10),
         getMyQuestions: (_, __, { user }) => Question.find({ author: user.id })
     },
 

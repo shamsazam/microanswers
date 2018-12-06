@@ -7,7 +7,7 @@ const typeDefs = gql`
     type Query {
         hello: String!,
         getUsers: [User!] @requireAuth,
-        getQuestions: [Question!] @requireAuth,
+        getTopQuestions: [Question!],
         getMyQuestions: [Question!] @requireAuth
     } 
 
