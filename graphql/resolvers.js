@@ -8,7 +8,7 @@ const resolvers = {
     Query: {
         hello: () => 'Hello there',
         getUsers: () => User.find(),
-        getTopQuestions: () => Question.find().sort({"likedBy": -1}).limit(10),
+        getTopQuestions: () => Question.find().populate('author', 'id firstname lastname').sort({"likedBy": -1}).limit(10),
         getMyQuestions: (_, __, { user }) => Question.find({ author: user.id })
     },
 
@@ -35,13 +35,19 @@ const resolvers = {
     Question: {
         author: ques => User.findById(ques.author),
         answers: ques => Answer.find({ question: ques.id }),
-        totalLikes: ques => ques.likedBy.length,
+        totalLikes: ques => ques.likedBy ? ques.likedBy.length: 0,
         alreadyLiked: (ques, _, { user }) => user && ques.likedBy.indexOf(user.id) > -1
     },
     
     Answer: {
         question: ans => Question.findById(ans.question),
         author: ans => User.findById(ans.author)
+    },
+
+    TopQuestion: {
+        answers: ques => Answer.find({ question: ques.id }).populate('author', 'id firstname lastname'),
+        totalLikes: ques => ques.likedBy ? ques.likedBy.length : 0,
+        alreadyLiked: (ques, _, { user }) => user && ques.likedBy.indexOf(user.id) > -1
     }
 }
 

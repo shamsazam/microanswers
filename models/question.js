@@ -8,4 +8,5 @@ const questionSchema = new mongoose.Schema({
     likedBy: [String]
 });
 
+
 module.exports = mongoose.model('Question', questionSchema);

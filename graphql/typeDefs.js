@@ -7,7 +7,7 @@ const typeDefs = gql`
     type Query {
         hello: String!,
         getUsers: [User!] @requireAuth,
-        getTopQuestions: [Question!],
+        getTopQuestions: [TopQuestion!],
         getMyQuestions: [Question!] @requireAuth
     } 
 
@@ -36,7 +36,7 @@ const typeDefs = gql`
         id: ID,
         title: String!,
         author: User,
-        answers: [Answer!],
+        answers: [Answer],
         totalLikes: Int!,
         alreadyLiked: Boolean
     }
@@ -46,6 +46,27 @@ const typeDefs = gql`
         body: String!,
         question: Question!,
         author: User!
+    }
+
+    type TopQuestion {
+        id: ID,
+        title: String!,
+        author: TopQuestionAuthor!,
+        answers: [TopQuestionAnswer],
+        totalLikes: Int!,
+        alreadyLiked: Boolean
+    }
+
+    type TopQuestionAuthor {
+        id: ID,
+        firstname: String!,
+        lastname: String!
+    }
+
+    type TopQuestionAnswer {
+        id: ID!,
+        body: String!,
+        author: TopQuestionAuthor!
     }
 
 `
