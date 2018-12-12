@@ -5,7 +5,9 @@ const userSchema = new mongoose.Schema({
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
     password: { type: String, required: true },
-    questions: { type: mongoose.Schema.Types.ObjectId, ref: 'Message' }
 });
+
+userSchema.virtual('questions', { ref: 'Question', localField: '_id', foreignField: 'author' });
+userSchema.virtual('answers', { ref: 'Answer', localField: '_id', foreignField: 'author' });
 
 module.exports = mongoose.model('User', userSchema);

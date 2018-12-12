@@ -14,8 +14,8 @@ const typeDefs = gql`
     type Mutation {
         register(email: String!, firstname: String!, lastname: String!, password: String!): AuthPayload!,
         login(email: String!, password: String!): AuthPayload!,
-        addQuestion(title: String!, author: String!): Question! @requireAuth,
-        addAnswer(body: String!, question: String!, author: String!): Answer! @requireAuth,
+        addQuestion(title: String!): Question! @requireAuth,
+        addAnswer(body: String!, question: String!): Answer! @requireAuth,
         likeQuestion(questionId: String!): Question @requireAuth
     }
 

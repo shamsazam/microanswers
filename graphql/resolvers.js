@@ -8,15 +8,17 @@ const resolvers = {
     Query: {
         hello: () => 'Hello there',
         getUsers: () => User.find(),
-        getTopQuestions: () => Question.find().populate('author', 'id firstname lastname').sort({"likedBy": -1}).limit(10),
+        getTopQuestions: () => Question.find().populate('author', 'id firstname lastname')
+            .populate({ path: 'answers', select: 'id body author', populate: { path: 'author', select: 'id firstname lastname'} })
+            .sort({"likedBy": -1}).limit(10),
         getMyQuestions: (_, __, { user }) => Question.find({ author: user.id })
     },
 
     Mutation: {
         register: (_, user) => authService.register(user),
         login: (_, { email, password }) => authService.login(email, password),
-        addQuestion: (_, args) => Question.create(args),
-        addAnswer: (_, args) => Answer.create(args),
+        addQuestion: (_, args, { user }) => Question.create({ author: user.id, ...args}),
+        addAnswer: (_, args, { user }) => Answer.create({ author: user.id, ...args}),
         likeQuestion: async (_, args, { user }) => {
             let ques = await Question.findById(args.questionId);
             const index = ques.likedBy.indexOf(user.id);
@@ -45,7 +47,6 @@ const resolvers = {
     },
 
     TopQuestion: {
-        answers: ques => Answer.find({ question: ques.id }).populate('author', 'id firstname lastname'),
         totalLikes: ques => ques.likedBy ? ques.likedBy.length : 0,
         alreadyLiked: (ques, _, { user }) => user && ques.likedBy.indexOf(user.id) > -1
     }
