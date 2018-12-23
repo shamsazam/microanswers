@@ -3,7 +3,6 @@ import ApolloClient from 'apollo-boost';
 import {ApolloProvider} from 'react-apollo';
 import Questions from './components/Questions';
 import Navbar from './components/Navbar';
-import './bulma.min.css';
 import './App.css';
 
 const client = new ApolloClient({
@@ -12,9 +11,9 @@ const client = new ApolloClient({
 
 const App = () => (
   <ApolloProvider client={client}> 
-    <div className="wrapper">
+    <div>
       <Navbar />
-      <h2>Welcome</h2>
+      <h2 style={{marginTop: '80px'}}>Welcome</h2>
       <Questions />
     </div>
   </ApolloProvider>
