@@ -13,8 +13,9 @@ const App = () => (
   <ApolloProvider client={client}> 
     <div>
       <Navbar />
-      <h2 style={{marginTop: '80px'}}>Welcome</h2>
-      <Questions />
+      <h2 style={{textAlign: 'center'}}>Top Questions</h2>
+      <div style={{ display: 'flex', justifyContent: 'center'}}></div>
+        <Questions />
     </div>
   </ApolloProvider>
 )
